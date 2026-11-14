@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>VM ZENITH ACADEMY</title>
+  <style>
+    :root{--navy:#101827;--navy2:#18243a;--gold:#d8b568;--cream:#f6f2e9;--ink:#182235;--muted:#687386;--line:#e7e2d8;--green:#19734a;--red:#a43b3b}
+    *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+    header{background:linear-gradient(135deg,var(--navy),#202f49);color:white;padding:30px 18px 25px;text-align:center;border-bottom:4px solid var(--gold)}
+    .logo-space{width:68px;height:68px;border:1px dashed #d8b568;border-radius:18px;margin:0 auto 12px;display:grid;place-items:center;color:var(--gold);font-size:12px}
+    h1{font-family:Georgia,serif;letter-spacing:1.4px;font-size:clamp(24px,6vw,34px);margin:0;color:#f0d18d}
+    .tagline{font-size:12px;letter-spacing:3px;margin:8px 0 0;color:#e7d7b4}
+    .wrap{max-width:760px;margin:24px auto;padding:0 15px 36px}
+    .card{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 24px #17233a0b}
+    h2{font-family:Georgia,serif;margin:0 0 6px;font-size:23px;color:var(--navy)}
+    .sub{color:var(--muted);font-size:14px;margin:0 0 18px}
+    label{display:block;font-weight:650;font-size:14px;margin:13px 0 7px}
+    input,select{width:100%;padding:13px 14px;border:1px solid #d8dce3;border-radius:10px;background:#fff;font-size:16px;color:var(--ink)}
+    button{border:0;border-radius:10px;padding:13px 17px;font-size:15px;font-weight:700;cursor:pointer}
+    .primary{background:var(--navy);color:#f3d797;width:100%;margin-top:16px}
+    .secondary{background:#eee9df;color:var(--navy)}
+    .gold{background:var(--gold);color:#1b2433}
+    .result{display:none;margin-top:18px;padding:16px;border-radius:12px;background:#f8f6f1;border:1px solid var(--line)}
+    .result.show{display:block}.dayrow{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+    .dayrow:last-child{border-bottom:0}.status{font-size:13px;font-weight:750;padding:6px 10px;border-radius:30px}
+    .tuition{background:#e1f2e8;color:var(--green)}.holiday{background:#f8e7e5;color:var(--red)}.unset{background:#eee;color:#555}
+    .admin-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .classbox{border:1px solid var(--line);border-radius:12px;padding:12px}
+    .classbox h3{margin:0 0 8px;font-size:15px}.classbox label{font-size:12px;margin:8px 0 5px}
+    .classbox select{padding:9px;font-size:14px}
+    .hidden{display:none!important}.notice{font-size:13px;color:var(--muted);line-height:1.5}
+    .error{color:#a43b3b;font-size:13px;margin-top:10px}.success{color:var(--green);font-size:13px;margin-top:10px}
+    footer{text-align:center;color:#7a8190;font-size:12px;padding:15px 10px 28px}
+    .topline{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+    @media(min-width:600px){.admin-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.card{padding:25px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo-space" aria-label="Logo placeholder">LOGO<br>ADD LATER</div>
+  <h1>VM ZENITH ACADEMY</h1>
+  <p class="tagline">LEARN • SHINE • RISE</p>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2>Weekend Tuition Status</h2>
+    <p class="sub">Enter your name and class to check this weekend's update.</p>
+    <label for="studentName">Student name</label>
+    <input id="studentName" type="text" maxlength="60" placeholder="Enter your name" autocomplete="name">
+    <label for="studentClass">Class</label>
+    <select id="studentClass"><option value="">Select your class</option></select>
+    <button class="primary" id="checkBtn">Check my status</button>
+    <div class="result" id="studentResult" aria-live="polite"></div>
+    <p class="notice" style="margin:14px 0 0">Please check the latest published update before the weekend.</p>
+  </section>
+
+  <section class="card">
+    <div class="topline">
+      <div><h2>Admin</h2><p class="sub" style="margin:4px 0 0">For authorised academy staff only.</p></div>
+      <button class="secondary" id="adminToggle">Admin login</button>
+    </div>
+    <div id="loginPanel" class="hidden">
+      <label for="adminPassword">Admin password</label>
+      <input id="adminPassword" type="password" placeholder="Enter admin password" autocomplete="current-password">
+      <button class="primary" id="loginBtn">Login</button>
+      <div id="loginMessage" class="error"></div>
+    </div>
+    <div id="adminPanel" class="hidden">
+      <p class="notice">Set Saturday and Sunday separately for every class, then publish once. Changes appear to students after publishing.</p>
+      <div class="admin-grid" id="classGrid"></div>
+      <button class="primary" id="publishBtn">Publish weekly update</button>
+      <div id="publishMessage"></div>
+      <button class="secondary" id="logoutBtn" style="margin-top:12px">Log out</button>
+    </div>
+  </section>
+</main>
+<footer>Developed by M.VARSHAN</footer>
+
+<script>
+  const classes = Array.from({length:12}, (_,i)=>i+1);
+  let adminPassword = "";
+  let currentStatuses = {};
+  const $ = id => document.getElementById(id);
+  classes.forEach(n => {
+    const opt = document.createElement("option");
+    opt.value = n; opt.textContent = `Class ${n}`;
+    $("studentClass").appendChild(opt);
+  });
+
+  function defaultStatuses(){
+    const data = {};
+    classes.forEach(n => data[n] = {saturday:"", sunday:""});
+    return data;
+  }
+  function safeText(value){
+    return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  async function loadStatuses(){
+    try{
+      const res = await fetch("/.netlify/functions/status");
+      if(!res.ok) throw new Error("Could not load");
+      const data = await res.json();
+      currentStatuses = data.statuses || defaultStatuses();
+    }catch(e){ currentStatuses = defaultStatuses(); }
+  }
+  function labelFor(value){
+    if(value === "tuition") return '<span class="status tuition">Tuition</span>';
+    if(value === "holiday") return '<span class="status holiday">Holiday</span>';
+    return '<span class="status unset">Not announced</span>';
+  }
+  $("checkBtn").addEventListener("click", async () => {
+    const name = $("studentName").value.trim();
+    const cls = $("studentClass").value;
+    if(!name || !cls){ $("studentResult").innerHTML = "Please enter your name and select your class."; $("studentResult").classList.add("show"); return; }
+    $("checkBtn").disabled = true; $("checkBtn").textContent = "Checking...";
+    await loadStatuses();
+    const s = currentStatuses[cls] || {};
+    $("studentResult").innerHTML = `<strong>Hello, ${safeText(name)}!</strong><div class="dayrow"><span>Saturday</span>${labelFor(s.saturday)}</div><div class="dayrow"><span>Sunday</span>${labelFor(s.sunday)}</div>`;
+    $("studentResult").classList.add("show");
+    $("checkBtn").disabled = false; $("checkBtn").textContent = "Check my status";
+  });
+
+  function renderAdminGrid(){
+    $("classGrid").innerHTML = classes.map(n => {
+      const s = currentStatuses[n] || {};
+      return `<div class="classbox"><h3>Class ${n}</h3>
+        <label for="sat${n}">Saturday</label>
+        <select id="sat${n}"><option value="">Not announced</option><option value="tuition" ${s.saturday==="tuition"?"selected":""}>Tuition</option><option value="holiday" ${s.saturday==="holiday"?"selected":""}>Holiday</option></select>
+        <label for="sun${n}">Sunday</label>
+        <select id="sun${n}"><option value="">Not announced</option><option value="tuition" ${s.sunday==="tuition"?"selected":""}>Tuition</option><option value="holiday" ${s.sunday==="holiday"?"selected":""}>Holiday</option></select>
+      </div>`;
+    }).join("");
+  }
+  $("adminToggle").addEventListener("click", () => {
+    $("loginPanel").classList.toggle("hidden");
+  });
+  $("loginBtn").addEventListener("click", async () => {
+    const pass = $("adminPassword").value;
+    $("loginMessage").textContent = "";
+    const res = await fetch("/.netlify/functions/status", {method:"POST",headers:{"Content-Type":"application/json","x-admin-password":pass},body:JSON.stringify({action:"verify"})});
+    if(res.ok){
+      adminPassword = pass;
+      await loadStatuses(); renderAdminGrid();
+      $("loginPanel").classList.add("hidden"); $("adminPanel").classList.remove("hidden"); $("adminToggle").classList.add("hidden");
+      $("adminPassword").value = "";
+    }else $("loginMessage").textContent = "Incorrect password. Please try again.";
+  });
+  $("publishBtn").addEventListener("click", async () => {
+    const statuses = {};
+    classes.forEach(n => statuses[n] = {saturday:$(`sat${n}`).value, sunday:$(`sun${n}`).value});
+    $("publishBtn").disabled = true; $("publishBtn").textContent = "Publishing...";
+    try{
+      const res = await fetch("/.netlify/functions/status", {method:"POST",headers:{"Content-Type":"application/json","x-admin-password":adminPassword},body:JSON.stringify({action:"publish",statuses})});
+      if(!res.ok) throw new Error("Publish failed");
+      currentStatuses = statuses;
+      $("publishMessage").className = "success";
+      $("publishMessage").textContent = "Published! Students can now see the latest update.";
+    }catch(e){
+      $("publishMessage").className = "error";
+      $("publishMessage").textContent = "Could not publish. Check your connection and try again.";
+    }finally{$("publishBtn").disabled=false;$("publishBtn").textContent="Publish weekly update";}
+  });
+  $("logoutBtn").addEventListener("click", () => {
+    adminPassword = ""; $("adminPanel").classList.add("hidden"); $("adminToggle").classList.remove("hidden"); $("adminToggle").textContent="Admin login";
+    $("publishMessage").textContent="";
+  });
+</script>
+</body>
+</html>
